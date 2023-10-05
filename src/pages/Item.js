@@ -1,8 +1,11 @@
+import ItemForm from "../components/forms/ItemForm"
+
 function Item() {
     return(
         <div>
             <h1>Item</h1>
-            <p>Conteúdo Item</p>
+            <p>Adicionar um novo item</p>
+            <ItemForm />
         </div>
     )
 }
