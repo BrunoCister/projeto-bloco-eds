@@ -1,10 +1,12 @@
 package com.projeto.pb.DTO;
 
+import java.util.UUID;
+
 import com.projeto.pb.entities.Vendedor;
 
 public class VendedorDTO {
 
-    private Long id;
+    private UUID id;
     private String nome;
     private String email;
     
@@ -17,7 +19,7 @@ public class VendedorDTO {
         this.email = vendedor.getEmail();
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 

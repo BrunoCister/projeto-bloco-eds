@@ -1,8 +1,11 @@
 package com.projeto.pb.entities;
 
+import java.util.UUID;
+
+import com.projeto.pb.DTO.VendedorRequestDTO;
+import org.hibernate.annotations.UuidGenerator;
+
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -11,8 +14,8 @@ import jakarta.persistence.Table;
 public class Vendedor {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @UuidGenerator(style = UuidGenerator.Style.RANDOM)
+    private UUID id;
     private String nome;
     private String email;
 
@@ -20,17 +23,22 @@ public class Vendedor {
 
     }
 
-    public Vendedor(Long id, String nome, String email) {
+    public Vendedor(UUID id, String nome, String email) {
         this.id = id;
         this.nome = nome;
         this.email = email;
     }
 
-    public Long getId() {
+    public Vendedor(VendedorRequestDTO data) {
+        this.nome = data.nome();
+        this.email = data.email();
+    }
+
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 

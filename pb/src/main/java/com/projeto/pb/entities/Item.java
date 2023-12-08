@@ -1,8 +1,11 @@
 package com.projeto.pb.entities;
 
+import java.util.UUID;
+
+import com.projeto.pb.DTO.ItemRequestDTO;
+import org.hibernate.annotations.UuidGenerator;
+
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
 import jakarta.persistence.Table;
 
@@ -11,28 +14,34 @@ import jakarta.persistence.Table;
 public class Item {
 
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long id;
+    @UuidGenerator(style = UuidGenerator.Style.RANDOM)
+    private UUID id;
     private String nome;
-    private double valor;
+    private Double valor;
     private String imgUrl;
 
     public Item() {
 
     }
 
-    public Item(Long id, String nome, double valor, String imgUrl) {
+    public Item(UUID id, String nome, Double valor, String imgUrl) {
         this.id = id;
         this.nome = nome;
         this.valor = valor;
         this.imgUrl = imgUrl;
     }
 
-    public Long getId() {
+    public Item(ItemRequestDTO data) {
+        this.nome = data.nome();
+        this.valor = data.valor();
+        this.imgUrl = data.imgUrl();
+    }
+
+    public UUID getId() {
         return id;
     }
 
-    public void setId(Long id) {
+    public void setId(UUID id) {
         this.id = id;
     }
 
@@ -44,11 +53,11 @@ public class Item {
         this.nome = nome;
     }
 
-    public double getValor() {
+    public Double getValor() {
         return valor;
     }
 
-    public void setValor(double valor) {
+    public void setValor(Double valor) {
         this.valor = valor;
     }
 

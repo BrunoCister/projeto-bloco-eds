@@ -1,25 +1,38 @@
 package com.projeto.pb.controllers;
 
 import java.util.List;
+import java.util.UUID;
 
+import com.projeto.pb.DTO.*;
+import com.projeto.pb.entities.Vendedor;
+import com.projeto.pb.repositories.VendedorRepository;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.web.bind.annotation.GetMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
-
-import com.projeto.pb.DTO.VendedorDTO;
-import com.projeto.pb.services.VendedorService;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping(value = "/vendedores")
 public class VendedorController {
 
     @Autowired
-    public VendedorService vendedorService;
+    public VendedorRepository vendedorRepository;
 
     @GetMapping
-    public List<VendedorDTO> findAll() {
-        List<VendedorDTO> result = vendedorService.findAll();
+    public List<VendedorResponseDTO> findAll() {
+        List<VendedorResponseDTO> result = vendedorRepository.findAll().stream().map(VendedorResponseDTO::new).toList();
         return result;
+    }
+
+    @PostMapping
+    public void save(@RequestBody VendedorRequestDTO data) {
+        Vendedor vendedorData = new Vendedor(data);
+        vendedorRepository.save(vendedorData);
+    }
+
+    @DeleteMapping(value = "/{id}")
+    public void delete(@PathVariable UUID id) {
+        Vendedor result = vendedorRepository.findById(id).get();
+        if (id.equals(result.getId())) {
+            vendedorRepository.deleteById(id);
+        }
     }
 }

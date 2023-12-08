@@ -1,12 +1,14 @@
 package com.projeto.pb.DTO;
 
+import java.util.UUID;
+
 import com.projeto.pb.entities.Item;
 
 public class ItemDTO {
 
-    private Long id;
+    private UUID id;
     private String nome;
-    private double valor;
+    private Double valor;
     private String imgUrl;
     
     public ItemDTO() {
@@ -19,7 +21,7 @@ public class ItemDTO {
         this.imgUrl = item.getImgUrl();
     }
 
-    public Long getId() {
+    public UUID getId() {
         return id;
     }
 
@@ -27,11 +29,27 @@ public class ItemDTO {
         return nome;
     }
 
-    public double getValor() {
+    public Double getValor() {
         return valor;
     }
 
     public String getImgUrl() {
         return imgUrl;
+    }
+
+    public void setId(UUID id) {
+        this.id = id;
+    }
+
+    public void setNome(String nome) {
+        this.nome = nome;
+    }
+
+    public void setValor(Double valor) {
+        this.valor = valor;
+    }
+
+    public void setImgUrl(String imgUrl) {
+        this.imgUrl = imgUrl;
     }
 }
