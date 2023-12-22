@@ -18,23 +18,23 @@ public class Item {
     private UUID id;
     private String nome;
     private Double valor;
-    private String imgUrl;
+    private String img_url;
 
     public Item() {
 
     }
 
-    public Item(UUID id, String nome, Double valor, String imgUrl) {
+    public Item(UUID id, String nome, Double valor, String img_url) {
         this.id = id;
         this.nome = nome;
         this.valor = valor;
-        this.imgUrl = imgUrl;
+        this.img_url = img_url;
     }
 
     public Item(ItemRequestDTO data) {
         this.nome = data.nome();
         this.valor = data.valor();
-        this.imgUrl = data.imgUrl();
+        this.img_url = data.img_url();
     }
 
     public UUID getId() {
@@ -62,11 +62,11 @@ public class Item {
     }
 
     public String getImgUrl() {
-        return imgUrl;
+        return img_url;
     }
 
-    public void setImgUrl(String imgUrl) {
-        this.imgUrl = imgUrl;
+    public void setImgUrl(String img_url) {
+        this.img_url = img_url;
     }  
     
     

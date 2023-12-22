@@ -1,12 +1,15 @@
 package com.projeto.pb.controllers;
 
 import java.util.List;
+import java.util.Optional;
 import java.util.UUID;
 
 import com.projeto.pb.DTO.*;
-import com.projeto.pb.entities.Vendedor;
-import com.projeto.pb.repositories.VendedorRepository;
+import com.projeto.pb.services.VendedorService;
+
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.HttpStatus;
+import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
@@ -14,25 +17,66 @@ import org.springframework.web.bind.annotation.*;
 public class VendedorController {
 
     @Autowired
-    public VendedorRepository vendedorRepository;
+    public VendedorService vendedorService;
 
     @GetMapping
-    public List<VendedorResponseDTO> findAll() {
-        List<VendedorResponseDTO> result = vendedorRepository.findAll().stream().map(VendedorResponseDTO::new).toList();
-        return result;
+    public ResponseEntity findAll() {
+        try {
+            List<VendedorResponseDTO> result = vendedorService.findAll();
+            return ResponseEntity.ok(result);
+        }
+        catch(Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @GetMapping(value = "/{id}")
+    public ResponseEntity findById(@PathVariable UUID id) {
+        try {
+            Optional<VendedorResponseDTO> result = vendedorService.findById(id);
+            return ResponseEntity.ok(result);
+        } catch(Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @PostMapping
-    public void save(@RequestBody VendedorRequestDTO data) {
-        Vendedor vendedorData = new Vendedor(data);
-        vendedorRepository.save(vendedorData);
+    public ResponseEntity save(@RequestBody VendedorRequestDTO vendedorRequestDTO) {
+        try {
+            vendedorService.save(vendedorRequestDTO);
+            return ResponseEntity.ok().build();
+        } catch(Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
+    }
+
+    @PatchMapping(value = "/{id}")
+    public ResponseEntity<VendedorResponseDTO> patch(@PathVariable UUID id, @RequestBody VendedorRequestDTO vendedorRequestDTO) {
+        try {
+            Optional<VendedorResponseDTO> optionalVendedor = vendedorService.findById(id);
+            if (optionalVendedor.isPresent()) {
+                VendedorResponseDTO vendedorResponseDTO = vendedorService.patch(id, vendedorRequestDTO);
+                return ResponseEntity.ok(vendedorResponseDTO);
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch (Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
+        }
     }
 
     @DeleteMapping(value = "/{id}")
-    public void delete(@PathVariable UUID id) {
-        Vendedor result = vendedorRepository.findById(id).get();
-        if (id.equals(result.getId())) {
-            vendedorRepository.deleteById(id);
+    public ResponseEntity delete(@PathVariable UUID id) {
+        try {
+            Optional<VendedorResponseDTO> optionalVendedor = vendedorService.findById(id);
+            if (optionalVendedor.isPresent()) {
+                vendedorService.delete(id);
+                return ResponseEntity.ok().build();
+            } else {
+                return ResponseEntity.notFound().build();
+            }
+        } catch(Exception e) {
+            return ResponseEntity.status(HttpStatus.INTERNAL_SERVER_ERROR).build();
         }
     }
 }

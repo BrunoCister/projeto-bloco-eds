@@ -1,6 +1,5 @@
 package com.projeto.pb.DTO;
 
-import com.projeto.pb.entities.Item;
 import com.projeto.pb.entities.Vendedor;
 
 import java.util.UUID;
